@@ -1,5 +1,7 @@
 
 *
+
+# --- Environnements virtuels ---
 .env
 .venv
 env/
@@ -22,3 +24,8 @@ parts/
 sdist/
 var/
 MANIFEST
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
