@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>(all) liste de tous les sondages</title>
+</head>
+<body>
+    <h1>Tous les sondages</h1>
+
+{% if question_list %}
+  <ul>
+    {% for question in question_list %}
+      <li>
+        <!-- On affiche id + titre -->
+        [{{ question.id }}]
+        <a href="{% url 'polls:detail' question.id %}">
+          {{ question.question_text }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Aucun sondage.</p>
+{% endif %}
+</body>
+</html>

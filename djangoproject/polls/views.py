@@ -2,8 +2,19 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-
+from django.views import generic
 from .models import Choice, Question
+
+class AllView(generic.ListView):
+    """
+    Affiche TOUS les sondages (pas seulement les 5 derniers).
+    """
+    template_name = "polls/all.html"
+    context_object_name = "question_list"
+
+    def get_queryset(self):
+        # On trie par date décroissante (plus récent en haut)
+        return Question.objects.order_by("-pub_date")
 
 def index(request):
     """
