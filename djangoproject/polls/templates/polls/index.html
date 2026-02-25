@@ -12,7 +12,7 @@
     {% for question in latest_question_list %}
       <li>
         <!-- URL nommée (on fera ça après dans urls.py) -->
-        <a href="{% url 'polls:detail' question.id %}">
+        <a href="{% url 'polls:detail' question.pk %}">
           {{ question.question_text }}
         </a>
       </li>
