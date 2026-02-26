@@ -1,9 +1,43 @@
-
+from django.db.models import Sum, Max
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from .models import Choice, Question
+
+def statistics(request):
+    """
+    Page de stats sur les sondages.
+    On utilise les agrégations Django (Sum, Max) comme demandé.
+    """
+    total_questions = Question.objects.count()
+    total_choices = Choice.objects.count()
+
+    # Somme de tous les votes (Choice.votes)
+    agg_votes = Choice.objects.aggregate(total_votes=Sum("votes"))
+    total_votes = agg_votes["total_votes"] or 0  # si None -> 0
+
+    # Moyenne de votes par sondage (simple : total_votes / total_questions)
+    avg_votes_per_question = (total_votes / total_questions) if total_questions > 0 else 0
+
+    # Dernière date de publication (Max)
+    agg_last = Question.objects.aggregate(last_pub_date=Max("pub_date"))
+    last_pub_date = agg_last["last_pub_date"]
+
+    # Dernière question enregistrée (si on a une date)
+    last_question = None
+    if last_pub_date is not None:
+        last_question = Question.objects.filter(pub_date=last_pub_date).first()
+
+    context = {
+        "total_questions": total_questions,
+        "total_choices": total_choices,
+        "total_votes": total_votes,
+        "avg_votes_per_question": avg_votes_per_question,
+        "last_question": last_question,
+        "last_pub_date": last_pub_date,
+    }
+    return render(request, "polls/statistics.html", context)
 
 def frequency(request, question_id):
     """
