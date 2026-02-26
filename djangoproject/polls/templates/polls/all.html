@@ -13,8 +13,8 @@
       <li>
         <!-- On affiche id + titre -->
         [{{ question.id }}]
-        <a href="{% url 'polls:detail' question.id %}">
-          {{ question.question_text }}
+        <a href="{% url 'polls:frequency' question.id %}">
+            {{ question.question_text }}
         </a>
       </li>
     {% endfor %}
