@@ -6,6 +6,7 @@ app_name = "polls"
 
 urlpatterns = [
     # Routes fixes d'abord
+    path("create/", views.create_question, name="create_question"),
     path("all/", views.AllView.as_view(), name="all"),
     path("statistics/", views.statistics, name="statistics"),
 
