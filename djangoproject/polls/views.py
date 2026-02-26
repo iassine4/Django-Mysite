@@ -2,8 +2,43 @@ from django.db.models import Sum, Max
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
+
+from .forms import QuestionCreateForm
 from .models import Choice, Question
+
+def create_question(request):
+    """
+    Vue pour créer une Question.
+    - GET  → affiche le formulaire vide
+    - POST → valide, enregistre en base, puis redirige
+    """
+
+    # 1) Cas GET : on veut juste afficher le formulaire
+    if request.method == "GET":
+        form = QuestionCreateForm()
+        return render(request, "polls/create_question.html", {"form": form})
+
+    # 2) Cas POST : on récupère ce que l'utilisateur a soumis
+    form = QuestionCreateForm(request.POST)
+
+    # 3) Validation Django (vérifie max_length, champ requis, etc.)
+    if not form.is_valid():
+        # Si invalide, on réaffiche la page avec les erreurs
+        return render(request, "polls/create_question.html", {"form": form})
+
+    # 4) Si valide : on crée l'objet en base
+    question_text = form.cleaned_data["question_text"]
+
+    # pub_date est maintenant (timezone-aware)
+    Question.objects.create(
+        question_text=question_text,
+        pub_date=timezone.now(),
+    )
+
+    # 5) Post/Redirect/Get : après création, on redirige (éviter double-submit)
+    return HttpResponseRedirect(reverse("polls:index"))
 
 def statistics(request):
     """
