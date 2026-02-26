@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>statistics</title>
+</head>
+<body>
+    <h1>Statistiques</h1>
+
+<ul>
+  <li>Nombre total de sondages : {{ total_questions }}</li>
+  <li>Nombre total de choix possibles : {{ total_choices }}</li>
+  <li>Nombre total de votes : {{ total_votes }}</li>
+  <li>Moyenne de votes par sondage : {{ avg_votes_per_question|floatformat:2 }}</li>
+
+  <li>Dernière date de publication : {{ last_pub_date }}</li>
+
+  {% if last_question %}
+    <li>Dernier sondage enregistré : [{{ last_question.id }}] {{ last_question.question_text }}</li>
+  {% else %}
+    <li>Dernier sondage enregistré : aucun</li>
+  {% endif %}
+</ul>
+
+<a href="{% url 'polls:index' %}">Retour à l’accueil Polls</a>
+</body>
+</html>
