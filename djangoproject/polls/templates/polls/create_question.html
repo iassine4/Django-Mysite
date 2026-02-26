@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>create_question</title>
+</head>
+<body>
+    <h1>Créer un nouveau sondage</h1>
+
+<form method="post">
+  {% csrf_token %}
+
+  <!-- Affiche les erreurs générales du formulaire -->
+  {{ form.non_field_errors }}
+
+  <div>
+    <!-- Label du champ -->
+    {{ form.question_text.label_tag }}
+    <br />
+
+    <!-- Champ input -->
+    {{ form.question_text }}
+
+    <br />
+    <small>{{ form.question_text.help_text }}</small>
+
+    <!-- Erreurs spécifiques au champ -->
+    <div style="color: red;">
+      {{ form.question_text.errors }}
+    </div>
+  </div>
+
+  <button type="submit">Créer</button>
+</form>
+
+<p>
+  <a href="{% url 'polls:index' %}">Retour à la liste</a>
+</p>
+</body>
+</html>
