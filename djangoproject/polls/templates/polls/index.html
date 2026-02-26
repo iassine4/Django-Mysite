@@ -6,7 +6,9 @@
 </head>
 <body>
     <h1>Polls</h1>
-
+<p>
+  <a href="{% url 'polls:create_question' %}">➕ Créer une question</a>
+</p>
 {% if latest_question_list %}
   <ul>
     {% for question in latest_question_list %}
