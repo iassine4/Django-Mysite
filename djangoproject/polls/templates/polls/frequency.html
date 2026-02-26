@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frequency</title>
+</head>
+<body>
+    <h1>{{ question.question_text }}</h1>
+
+<ul>
+  {% for row in choices_stats %}
+    <li>
+      <!-- row = (choice, votes, ratio) -->
+      {{ row.0.choice_text }} —
+      {{ row.1 }} vote(s) —
+      {{ row.2|floatformat:2 }} (ratio)
+
+      <!-- Pourcentage = ratio * 100 -->
+      ({{ row.2|floatformat:2 }} × 100 ≈ {{ row.2|floatformat:2 }}0 %)
+    </li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'polls:all' %}">Retour à tous les sondages</a>
+<a href="{% url 'polls:frequency' question.id %}">
+  {{ question.question_text }}
+</a>
+</body>
+</html>

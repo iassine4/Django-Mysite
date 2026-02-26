@@ -5,9 +5,39 @@ from django.urls import reverse
 from django.views import generic
 from .models import Choice, Question
 
+def frequency(request, question_id):
+    """
+    Affiche les résultats du sondage :
+    - votes (valeur absolue)
+    - pourcentage
+    Sans formulaire de vote.
+    """
+    question = get_object_or_404(Question, pk=question_id)
+
+    # On essaye d'utiliser la méthode optionnelle get_choices()
+    # Si elle n'existe pas, on calcule ici.
+    if hasattr(question, "get_choices"):
+        choices_stats = question.get_choices()
+        # choices_stats attendu : liste de tuples (choice, votes, ratio)
+    else:
+        # Fallback (au cas où get_choices n'est pas présent)
+        choices = list(question.choice_set.all())
+        total_votes = sum(c.votes for c in choices)
+
+        choices_stats = []
+        for c in choices:
+            ratio = (c.votes / total_votes) if total_votes > 0 else 0.0
+            choices_stats.append((c, c.votes, ratio))
+
+    context = {
+        "question": question,
+        "choices_stats": choices_stats,
+    }
+    return render(request, "polls/frequency.html", context)
+
 class AllView(generic.ListView):
     """
-    Affiche TOUS les sondages (pas seulement les 5 derniers).
+    Affiche TOUS les sondages.
     """
     template_name = "polls/all.html"
     context_object_name = "question_list"
