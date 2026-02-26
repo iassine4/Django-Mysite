@@ -11,7 +11,7 @@
   <ul>
     {% for question in latest_question_list %}
       <li>
-        <!-- URL nommée (on fera ça après dans urls.py) -->
+        <!-- URL nommée -->
         <a href="{% url 'polls:detail' question.pk %}">
           {{ question.question_text }}
         </a>
