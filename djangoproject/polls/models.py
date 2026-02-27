@@ -19,7 +19,13 @@ class Question(models.Model):
         return f"{text_preview} ({date_str})"
 
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        """
+        True uniquement si la publication est entre
+        (now - 1 jour) et now.
+        → interdit le futur + interdit trop ancien.
+        """
+        now = timezone.now()  # maintenant (avec timezone Django)
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
     def age(self):
         """
@@ -72,6 +78,12 @@ class Question(models.Model):
 
         return max_choice, max_choice.votes, ratio
 
+    def __repr__(self):
+        """
+        Représentation technique (utile pour les tests et le shell).
+        On garde le texte complet, même si __str__ est tronqué.
+        """
+        return "<Question: {}>".format(self.question_text)
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
