@@ -46,3 +46,7 @@ class ChoiceAdmin(admin.ModelAdmin):
 # Enregistrement avec leurs classes d'admin
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice, ChoiceAdmin)
+
+admin.site.site_header = "Administration Polls"
+admin.site.site_title = "Polls Admin"
+admin.site.index_title = "Gestion des sondages"
