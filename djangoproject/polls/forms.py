@@ -9,11 +9,12 @@ class QuestionCreateForm(forms.Form):
 
     question_text = forms.CharField(
         label="Texte de la question",
-        max_length=200,
-        help_text="Écris la question (200 caractères max).",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Ex: Quel est ton framework préféré ?",
+        max_length=200,  # validation automatique : <= 200
+        required=True,  # validation : obligatoire
+        help_text="200 caractères maximum.",
+        error_messages={
+            "required": "Le texte de la question est obligatoire.",
+            "max_length": "Le texte est trop long (200 caractères max).",
             }
         ),
     )
