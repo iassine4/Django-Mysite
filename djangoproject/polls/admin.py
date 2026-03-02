@@ -1,6 +1,13 @@
 from django.contrib import admin
 from .models import Question, Choice
 
+class ChoiceInline(admin.StackedInline):
+    """
+    Inline = éditer les Choice directement dans la page Question.
+    """
+    model = Choice
+    extra = 3  # propose 3 lignes vides
+
 class QuestionAdmin(admin.ModelAdmin):
     # Affiche plusieurs colonnes dans la liste
     list_display = ("id", "question_text", "pub_date")
@@ -13,6 +20,13 @@ class QuestionAdmin(admin.ModelAdmin):
 
     # Barre de recherche
     search_fields = ("question_text",)
+
+    fieldsets = [
+        (None, {"fields": ["question_text"]}),
+        ("Informations de date", {"fields": ["pub_date"]}),
+    ]
+
+    inlines = [ChoiceInline]
 
 
 class ChoiceAdmin(admin.ModelAdmin):
