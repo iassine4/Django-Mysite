@@ -1,33 +1,26 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Polls</title>
 
-    <!-- Chargement du fichier CSS de l'app polls -->
-    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
-</head>
+<!-- Chargement du fichier CSS de l'app polls -->
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
 <body>
-    <h1>Polls</h1>
-<p>
-  <a href="{% url 'polls:create_question' %}">➕ Créer une question</a>
-</p>
-{% if latest_question_list %}
-  <ul>
-    {% for question in latest_question_list %}
-      <li>
-        <!-- URL nommée -->
-        <a href="{% url 'polls:detail' question.pk %}">
-          {{ question.question_text }}
-        </a>
-          <!-- Affichage de la date de publication -->
-        <small>— publié le {{ question.pub_date }}</small>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Aucun sondage disponible.</p>
-{% endif %}
+  <h1>Polls</h1>
+  <p>
+    <a href="{% url 'polls:create_question' %}">➕ Créer une question</a>
+  </p>
+  {% if latest_question_list %}
+    <ul>
+      {% for question in latest_question_list %}
+        <li>
+          <!-- URL nommée -->
+          <a href="{% url 'polls:detail' question.pk %}">
+            {{ question.question_text }}
+          </a>
+            <!-- Affichage de la date de publication -->
+          <small>— publié le {{ question.pub_date }}</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun sondage disponible.</p>
+  {% endif %}
 </body>
-</html>
