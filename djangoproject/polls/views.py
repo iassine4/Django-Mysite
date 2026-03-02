@@ -112,8 +112,11 @@ class AllView(generic.ListView):
     context_object_name = "question_list"
 
     def get_queryset(self):
-        # On trie par date décroissante (plus récent en haut)
-        return Question.objects.order_by("-pub_date")
+        # On exclut les questions du futur
+        return (
+            Question.objects.filter(pub_date__lte=timezone.now())
+            .order_by("-pub_date")[:5]
+        )
 
 def index(request):
     """
