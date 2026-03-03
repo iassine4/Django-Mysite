@@ -16,5 +16,5 @@ class QuestionCreateForm(forms.Form):
             "required": "Le texte de la question est obligatoire.",
             "max_length": "Le texte est trop long (200 caractères max).",
             }
-        ),
+        ,
     )

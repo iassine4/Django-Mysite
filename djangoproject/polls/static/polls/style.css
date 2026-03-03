@@ -3,9 +3,13 @@
     padding: 0;
 }
 body {
-    background: white url("../pictures/Dino.png") no-repeat;
-}
+    background: white url("../pictures/Dino.png");
+    padding: 3%;
 
+}
+ul,li{
+    background: white;
+}
 h1 {
     margin-bottom: 0.5rem;
     color: red;
