@@ -4,8 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
-
-from .forms import QuestionCreateForm
+from .forms import QuestionWithChoicesForm
 from .models import Choice, Question
 
 
@@ -17,11 +16,11 @@ def create_question(request):
     """
     # 1) Cas GET : on veut juste afficher le formulaire
     if request.method == "GET":
-        form = QuestionCreateForm()
+        form = QuestionWithChoicesForm()
         return render(request, "polls/create_question.html", {"form": form})
 
     # 2) Cas POST : on récupère ce que l'utilisateur a soumis
-    form = QuestionCreateForm(request.POST)
+    form = QuestionWithChoicesForm(request.POST)
 
     # 3) Validation Django (vérifie max_length, champ requis, etc.)
     if not form.is_valid():
@@ -122,7 +121,12 @@ def index(request):
     """
     Affiche la liste des 5 dernières questions.
     """
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    now = timezone.now()
+    latest_question_list = (
+        Question.objects
+        .filter(pub_date__lte=now)  # ✅ exclut le futur
+        .order_by("-pub_date")[:5]
+    )
 
     # render() = raccourci Django : charge le template + injecte le contexte
     context = {"latest_question_list": latest_question_list}
@@ -169,4 +173,4 @@ def vote(request, question_id):
     selected_choice.save()
 
     # Bonne pratique : Post/Redirect/Get
-    return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+    return HttpResponseRedirect(reverse("polls:results", args=(question.pk,)))
