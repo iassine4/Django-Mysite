@@ -1,4 +1,5 @@
-
+# --- BDD ---
+db.sqlite3
 # --- Environnements virtuels ---
 .env
 .venv
