@@ -8,13 +8,13 @@ from django.views import generic
 from .forms import QuestionCreateForm
 from .models import Choice, Question
 
+
 def create_question(request):
     """
     Vue pour créer une Question.
     - GET  → affiche le formulaire vide
     - POST → valide, enregistre en base, puis redirige
     """
-
     # 1) Cas GET : on veut juste afficher le formulaire
     if request.method == "GET":
         form = QuestionCreateForm()
@@ -29,13 +29,13 @@ def create_question(request):
         return render(request, "polls/create_question.html", {"form": form})
 
     # 4) Si valide : on crée l'objet en base
-    question_text = form.cleaned_data["question_text"]
+    question = form.save(commit=False)
 
-    # pub_date est maintenant (timezone-aware)
-    Question.objects.create(
-        question_text=question_text,
-        pub_date=timezone.now(),
-    )
+    # On complète les champs non saisis par l'utilisateur
+    question.pub_date = timezone.now()
+
+    # Puis on enregistre en base
+    question.save()
 
     # 5) Post/Redirect/Get : après création, on redirige (éviter double-submit)
     return HttpResponseRedirect(reverse("polls:index"))
