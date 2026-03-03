@@ -1,5 +1,6 @@
 from django import forms
-from djangoproject.polls.models import Question
+
+from .models import Question
 
 
 class QuestionCreateForm(forms.ModelForm):
@@ -13,7 +14,7 @@ class QuestionCreateForm(forms.ModelForm):
         fields = ["question_text"]  # on expose uniquement ce champ
         widgets = {
             "question_text": forms.Textarea(
-                attrs={"rows": 3, "placeholder": "Ex : Quel est ton sport préféré ?"}
+                attrs={"rows": 2, "placeholder": "Ex : Quel est ton sport préféré ?"}
             )
         }
         labels = {"question_text": "Texte de la question"}
