@@ -1,20 +1,20 @@
 from django import forms
+from djangoproject.polls.models import Question
 
 
-class QuestionCreateForm(forms.Form):
+class QuestionCreateForm(forms.ModelForm):
     """
-    Formulaire simple pour créer une Question.
-    - Identifiants (QuestionCreateForm, question_text).
+    ModelForm : Django construit le formulaire à partir du modèle.
+    Moins de duplication = mieux pour SonarQube.
     """
 
-    question_text = forms.CharField(
-        label="Texte de la question",
-        max_length=200,  # validation automatique : <= 200
-        required=True,  # validation : obligatoire
-        help_text="200 caractères maximum.",
-        error_messages={
-            "required": "Le texte de la question est obligatoire.",
-            "max_length": "Le texte est trop long (200 caractères max).",
-            }
-        ,
-    )
+    class Meta:
+        model = Question
+        fields = ["question_text"]  # on expose uniquement ce champ
+        widgets = {
+            "question_text": forms.Textarea(
+                attrs={"rows": 3, "placeholder": "Ex : Quel est ton sport préféré ?"}
+            )
+        }
+        labels = {"question_text": "Texte de la question"}
+        help_texts = {"question_text": "200 caractères maximum."}
