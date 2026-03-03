@@ -10,31 +10,62 @@
 <form method="post">
   {% csrf_token %}
 
-  <!-- Affiche les erreurs générales du formulaire -->
-  {{ form.non_field_errors }}
-
-  <div>
-    <!-- Label du champ -->
-    {{ form.question_text.label_tag }}
-    <br />
-
-    <!-- Champ input -->
-    {{ form.question_text }}
-
-    <br />
-    <small>{{ form.question_text.help_text }}</small>
-
-    <!-- Erreurs spécifiques au champ -->
+  <!-- Bloc erreurs globales (ex : "au moins 2 choix") -->
+  {% if form.non_field_errors %}
     <div style="color: red;">
-      {{ form.question_text.errors }}
+      {{ form.non_field_errors }}
     </div>
+  {% endif %}
+
+  <!-- Bloc Question -->
+  <div>
+    {{ form.question_text.label_tag }}<br />
+    {{ form.question_text }}<br />
+    <small>{{ form.question_text.help_text }}</small>
+    <div style="color: red;">{{ form.question_text.errors }}</div>
   </div>
 
-  <button type="submit">Créer</button>
+  <hr />
+
+  <!-- Bloc Choices 1..5 -->
+  <h2>Choix (2 minimum)</h2>
+
+  <div>
+    {{ form.choice_1.label_tag }}<br />
+    {{ form.choice_1 }}
+    <div style="color: red;">{{ form.choice_1.errors }}</div>
+  </div>
+
+  <div>
+    {{ form.choice_2.label_tag }}<br />
+    {{ form.choice_2 }}
+    <div style="color: red;">{{ form.choice_2.errors }}</div>
+  </div>
+
+  <div>
+    {{ form.choice_3.label_tag }}<br />
+    {{ form.choice_3 }}
+    <div style="color: red;">{{ form.choice_3.errors }}</div>
+  </div>
+
+  <div>
+    {{ form.choice_4.label_tag }}<br />
+    {{ form.choice_4 }}
+    <div style="color: red;">{{ form.choice_4.errors }}</div>
+  </div>
+
+  <div>
+    {{ form.choice_5.label_tag }}<br />
+    {{ form.choice_5 }}
+    <div style="color: red;">{{ form.choice_5.errors }}</div>
+  </div>
+
+  <br />
+  <button type="submit">Créer le sondage</button>
 </form>
 
 <p>
-  <a href="{% url 'polls:index' %}">Retour à la liste</a>
+  <a href="{% url 'polls:index' %}">Retour</a>
 </p>
 </body>
 </html>
